@@ -1,0 +1,15 @@
+configuration {
+  modi: "drun,window";
+  font: "JetBrains Mono Nerd Font 12";
+  show-icons: true;
+  combi-modi: "window,drun";
+  drun-diplay-format: "{icon} {name}";
+  display-drun: "  Apps";
+  display-window: "﩯  Window";
+  sidebar-mode: true;
+}
+
+/* @theme "catppuccin-mocha" */
+/* @theme "catppuccin-frappe" */
+@theme "catppuccin-macchiato"
+/* @theme "catppuccin-latte" */
