@@ -1,0 +1,234 @@
+{
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "palette": {
+        "c-badge-text": "#212121",
+        "c-project-generic-error": "#FF867F",
+        "c-project-crystal": "#FFFFFF",
+        "c-project-flutter": "#6DC2FF",
+        "c-project-lua": "#BBC2FF",
+        "c-project-node": "#9CFF57",
+        "c-project-rust": "#FFAB40",
+        "c-project-python": "#FFE873",
+        "c-shell-state-ssh-active": "#BAFFFF",
+        "c-shell-state-root-active": "#9FFFE0",
+        "c-shell-state-root-ssh-active": "#FFB2FF"
+    },
+    "blocks": [
+        {
+            "alignment": "left",
+            "newline": false,
+            "type": "prompt",
+            "segments": [
+                {
+                    "type": "os",
+                    "style": "diamond",
+                    "properties": {
+                        "alpine": "\uf300 Alpine",
+                        "arch": "\uf303 Arch",
+                        "centos": "\uf304 Centos",
+                        "debian": "\uf306 Debian",
+                        "elementary": "\uf309 Elementary",
+                        "fedora": "\uf30a Fedora",
+                        "gentoo": "\uf30d Gentoo",
+                        "linux": "\ue712 Linux",
+                        "macos": "\uf179 Macos",
+                        "manjaro": "\uf312 Manjaro",
+                        "mint": "\uf30f Mint",
+                        "opensuse": "\uf314 OpenSuse",
+                        "raspbian": "\uf315 Raspbian",
+                        "ubuntu": "\uf31b Ubuntu",
+                        "windows": "\uf871 Windows",
+                        "wsl": "\ue712"
+                    },
+                    "template": "{{ if .WSL }}WSL at {{end}}{{ .Icon }} ",
+                    "background": "#1865f5",
+                    "foreground": "p:c-badge-text",
+                    "leading_diamond": "\ue0b6",
+                    "powerline_symbol": "\ue0b0"
+                },
+                {
+                    "type": "session",
+                    "style": "diamond",
+                    "powerline_symbol": "\ue0b0",
+                    "background": "#7DC4E4",
+                    "foreground": "#100e23",
+                    "background_templates": [
+                        "{{ if and (.Segments.Session.SSHSession) (not .Root) }}p:c-shell-state-ssh-active{{ end }}",
+                        "{{ if and (not .Segments.Session.SSHSession) (.Root) }}p:c-shell-state-root-active{{ end }}",
+                        "{{ if and (.Segments.Session.SSHSession) (.Root) }}p:c-shell-state-root-ssh-active{{ end }}"
+                    ],
+                    "template": "{{ if or (.Segments.Session.SSHSession) (.Root) }}{{ if .Segments.Session.SSHSession }}\uE7A2 SSH{{ end }}{{ if and (.Segments.Session.SSHSession) (.Root) }} \uE621 {{ end }}{{ if .Root }}# Root{{ end }}{{ end }} {{ .UserName }}@{{ .HostName }}"
+                },
+                {
+                    "type": "path",
+                    "style": "powerline",
+                    "powerline_symbol": "\ue0b0",
+                    "foreground": "#ffafd2",
+                    "background": "#29315A",
+                    "properties": {
+                        "folder_icon": "\uf07b",
+                        "folder_separator_icon": " \uf9e0",
+                        "home_icon": "home",
+                        "style": "agnoster_full"
+                    },
+                    "template": " \ue5ff {{ .Path }} "
+                },
+                {
+                    "type": "git",
+                    "style": "powerline",
+                    "background": "#191f48",
+                    "foreground": "#43CCEA",
+                    "powerline_symbol": "\ue0b0",
+                    "foreground_templates": [
+                        "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}",
+                        "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff4500{{ end }}",
+                        "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
+                        "{{ if gt .Behind 0 }}#B388FF{{ end }}"
+                    ],
+                    "properties": {
+                        "branch_max_length": 25,
+                        "fetch_stash_count": true,
+                        "fetch_status": true,
+                        "fetch_upstream_icon": true
+                    },
+                    "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
+                    "trailing_diamond": "\ue0b4"
+                }
+            ]
+        },
+        {
+            "alignment": "right",
+            "segments": [
+                {
+                    "type": "executiontime",
+                    "style": "diamond",
+                    "background": "#91f2ff",
+                    "foreground": "#000000",
+                    "template": "\ufa1e {{ .FormattedMs }}s ",
+                    "properties": {
+                        "style": "dallas",
+                        "threshold": 0
+                    },
+                    "leading_diamond": "\ue0b6",
+                    "trailing_diamond": "<transparent,#91f2ff>\ue0b2</>"
+                },
+                {
+                    "background_templates": [
+                        "{{ if empty .Full }}p:c-project-generic-error{{ else }}p:c-project-crystal{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "style": "diamond",
+                    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_CRYSTAL)) }}\uE62F {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}{{ end }}",
+                    "type": "crystal",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "background_templates": [
+                        "{{ if empty .Full }}p:c-project-generic-error{{ else }}p:c-project-flutter{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "style": "diamond",
+                    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_FLUTTER)) }}Flutter | {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}{{ end }}",
+                    "type": "dart",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "background_templates": [
+                        "{{ if .Error }}p:c-project-generic-error{{ else }}p:c-project-lua{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "style": "diamond",
+                    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_LUA)) }}\uE620 {{ if or (.Error) (empty .Full) }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}{{ end }}",
+                    "type": "lua",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "background_templates": [
+                        "{{ if empty .Full }}p:c-project-generic-error{{ else }}p:c-project-node{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "style": "diamond",
+                    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_NODE)) }}\uE718 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}{{ end }}",
+                    "type": "node",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "background_templates": [
+                        "{{ if empty .Full }}p:c-project-generic-error{{ else }}p:c-project-rust{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "style": "diamond",
+                    "template": "{{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_RUST)) }}\uE7A8 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}{{ end }}",
+                    "type": "rust",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "background_templates": [
+                        "{{ if empty .Full }}p:c-project-generic-error{{ else }}p:c-project-python{{ end }}"
+                    ],
+                    "foreground": "p:c-badge-text",
+                    "properties": {
+                        "display_mode": "context"
+                    },
+                    "style": "diamond",
+                    "template": "{{ if or (eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON))) (eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON_VENV))) }}\uE235 {{ if eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON)) }}{{ .Full }}{{ end }}{{ if and (.Venv) (eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON))) (eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON_VENV))) }} \uE621 {{ end }}{{ if and (.Venv) (eq \"False\" (title (default \"False\" .Env.DISABLE_SEGMENT_PROJECT_PYTHON_VENV))) }}{{ if .Env.SEGMENT_PROJECT_PYTHON_ACTIVE_VENV_STR }}{{ .Env.SEGMENT_PROJECT_PYTHON_ACTIVE_VENV_STR }}{{ else }}{{ .Venv }}{{ end }}{{ end }}{{ end }}",
+                    "type": "python",
+                    "leading_diamond": "\ue0b2",
+                    "trailing_diamond": "\ue0b0"
+                },
+                {
+                    "type": "time",
+                    "style": "diamond",
+                    "background": "#f8677b",
+                    "foreground": "#000000",
+                    "properties": {
+                        "time_format": "3:04:05 PM | Monday"
+                    },
+                    "template": " \uf64f {{ .CurrentDate | date .Format }} \uf5ef ",
+                    "leading_diamond": "<transparent,#F8677b>\ue0b0</>",
+                    "trailing_diamond": "\ue0b4"
+                }
+            ],
+            "type": "prompt"
+        },
+        {
+            "alignment": "left",
+            "newline": true,
+            "type": "prompt",
+            "segments": [
+                {
+                    "foreground": "#7FD5EA",
+                    "foreground_templates": [
+                        "{{ if .Root }}#CD4277{{ end }}"
+                    ],
+                    "style": "plain",
+                    "type": "text",
+                    "template": "\ue285"
+                }
+            ]
+        }
+    ],
+    "console_title_template": "{{ .Folder }}",
+    "final_space": true,
+    "transient_prompt": {
+        "background": "transparent",
+        "foreground": "#924de8",
+        "template": "\ue285"
+    },
+    "valid_line": {
+        "background": "transparent",
+        "foreground": "#ffffff",
+        "template": "<#e0def4,#286983>\uf42e </><#286983,transparent>\ue0b4</> "
+    },
+    "error_line": {
+        "background": "transparent",
+        "foreground": "#ffffff",
+        "template": "<#eb6f92,#286983>\ue009 </><#286983,transparent>\ue0b4</> "
+    },
+    "version": 2
+}
