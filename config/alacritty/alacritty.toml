@@ -1,0 +1,12 @@
+import = [
+	"~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[font]
+
+normal.family = "JetBrainsMono NF"
+bold.family = "JetBrainsMono NF"
+italic.family = "JetBrainsMono NF"
+bold_italic.family = "JetBrainsMono NF"
+
+size = 12

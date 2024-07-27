@@ -2,18 +2,16 @@ set $mod Mod4
 
 font pango:monospace 8
 
+exec --no-startup-id prime-offload
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-
 exec --no-startup-id nm-applet
 
 # Personal Scripts
-exec_always --no-startup-id $HOME/.config/i3/Startup.sh
 exec --no-startup-id pulseaudio -k
 exec --no-startup-id fcitx5 -d
 exec --no-startup-id unclutter -idle 1 &
 exec_always --no-startup-id $HOME/.config/polybar/polybar_run.sh
-exec --no-startup-id feh --bg-scale Pictures/Background/Background1.png
 
 # Personal bind
 bindsym $mod+shift+p exec --no-startup-id maim --select "$HOME/Pictures/$(date).png"
