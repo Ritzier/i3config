@@ -12,7 +12,7 @@
 `pipewire-pulse`, ``
 
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex libinput xdotool wmctrl maim unclutter openssh wireless-regdb
+pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex libinput xdotool wmctrl maim unclutter openssh wireless-regdb docker docker-compose
 ```
 
 ## Efibootmgr
@@ -34,6 +34,8 @@ blkid -s UUID -o value /dev/nvme0n1p1
 
 ## System configuration
 
+- `passwd`
+- `sudoers`
 - systemctl: `NetworkManager`, `dhcpcd`
 - Modified `locale.gen` and `locale.conf`, run `locale-gen`
 - `openssh`, `keygen`
@@ -128,6 +130,11 @@ QT_IM_MODULE=fcitx
 XMODIFIERS=@im=fcitx
 SDL_IM_MODULE=fcitx
 ```
+
+### Docker
+
+- systemctl
+- `usermod -aG docker $USER`
 
 ### Bluetooth
 
