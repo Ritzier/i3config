@@ -7,6 +7,7 @@
 `chroot`
 
 ## Basic package
+
 `linux`, `linux-headers`, `linux-firmware`, `base`, `base-devel`, `vim`, `git`,
 `i3`, `intel-ucode`, `xorg`, `network-manager`, `efibootmgr`, `pavucontrol`,
 `pipewire-pulse`, ``
@@ -20,9 +21,9 @@ pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-uc
 ```sh
 efibootmgr --create \
 --disk /dev/sda --part 1 \
---label "Arch" \
+--label "Arch EFI" \
 --loader /vmlinuz-linux \
---unicode 'root=UUID=b2978444-769b-4d1b-8061-c1ac685e5fc7 rw loglevel=3 quiet initrd=\initramfs-linux.img'
+--unicode 'root=UUID=b2978444-769b-4d1b-8061-c1ac685e5fc7 rw loglevel=3 quiet splash reboot=bios initrd=\initramfs-linux.img'
 ```
 
 use `blkid` just output uuid of specific partition or get the UUID from
@@ -40,13 +41,14 @@ blkid -s UUID -o value /dev/nvme0n1p1
 - Modified `locale.gen` and `locale.conf`, run `locale-gen`
 - `openssh`, `keygen`
 - Modified `/etc/hostname`, and `/etc/hosts`:
+
 ```
 127.0.0.1   localhost
 ::1         localhost
 127.0.1.1   hostname
 ```
-- `rustup`
 
+- `rustup`
 
 ### Reflector
 
@@ -62,6 +64,7 @@ reflector --verbose --ipv4 --sort rate --score 10 --save /etc/pacman.d/mirrorlis
 timedatectl set-ntp true
 timedatectl set-timezone <time_zone>
 ```
+
 Can check the timezone with `tiemdatectl list-timezones`
 
 ### Swap
@@ -72,6 +75,7 @@ swapon /swapfile
 ```
 
 `/etc/fstab`:
+
 ```
 /swapfile none swap defaults 0 0
 ```
@@ -96,7 +100,6 @@ Install graphic driver:
 
 - Intel graphics: `xf86-video-intel` and `mesa`
 - Nvidia graphics: Turing serias or newer `nvidia-open` else `nvidia`
-
 
 ### Optimus Manager
 
@@ -124,6 +127,7 @@ pacman -S fcitx5-im fcitx5-chinese-addons
 ```
 
 `/etc/environment`:
+
 ```sh
 GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx
@@ -146,6 +150,7 @@ sudo systemctl enable --now bluetooth
 ### Touchpad
 
 `/etc/X11/xorg.conf.d/30-touchpad.conf`:
+
 ```sh
 Section "InputClass"
     Identifier "touchpad"
@@ -157,6 +162,7 @@ EndSection
 ```
 
 require `libinput-gestures` (AUR) add user to group input
+
 ```sh
 sudo gpasswd -a $USER input
 ```
@@ -164,16 +170,66 @@ sudo gpasswd -a $USER input
 Could check configuration file in `config/libinput-gestures.conf`
 
 Start it:
+
 ```sh
 libinput-gestures-setup autostart
 ```
 
-### Wifi Country
+### Wifi
 
-`wireless-regdb` needed and change to `US`:
+Dependencies: `wireless-regdb`,`dnsmasq`, `iptables`, `wpa_supplicant`,
+`dhcpcd`, `firewalld`, `linux-wifi-hotspot`
+
+#### Enable 5Ghz
+
+Modified `/etc/conf.d/wireless-regdom`, uncomment it:
+
+Reboot it, and check country code with: `iw reg get`
+
+Show the band with: `iw list | grep -A 15 Frequencies:`
+
+#### Hotspot
+
+Require: `linux-wifi-hotspot`
+
+`systemctl enable create_ap` for startup
+
+example `/etc/create_ap.conf`:
 
 ```sh
-iw reg set US
+CHANNEL=default
+GATEWAY=192.168.1.1
+WPA_VERSION=2
+ETC_HOSTS=0
+DHCP_DNS=gateway
+NO_DNS=0
+NO_DNSMASQ=0
+HIDDEN=0
+MAC_FILTER=0
+MAC_FILTER_ACCEPT=/etc/hostapd/hostapd.accept
+ISOLATE_CLIENTS=0
+SHARE_METHOD=nat
+IEEE80211N=0
+IEEE80211AC=0
+IEEE80211AX=1
+HT_CAPAB=[HT40+]
+VHT_CAPAB=
+DRIVER=nl80211
+NO_VIRT=0
+COUNTRY=
+FREQ_BAND=5
+NEW_MACADDR=
+DAEMONIZE=0
+DAEMON_PIDFILE=
+DAEMON_LOGFILE=/dev/null
+DNS_LOGFILE=
+NO_HAVEGED=0
+WIFI_IFACE=wlp41s0
+INTERNET_IFACE=enp48s0f3u1
+SSID=Hotspot
+PASSPHRASE=12345678
+USE_PSK=0
+ADDN_HOSTS=
 ```
 
 ## Other
