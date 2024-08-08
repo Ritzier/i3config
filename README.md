@@ -13,7 +13,7 @@
 `pipewire-pulse`, ``
 
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex libinput xdotool wmctrl maim unclutter openssh wireless-regdb docker docker-compose
+pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex libinput xdotool wmctrl maim unclutter openssh wireless-regdb docker docker-compose pkgfile
 ```
 
 ## Efibootmgr
@@ -78,6 +78,14 @@ swapon /swapfile
 
 ```
 /swapfile none swap defaults 0 0
+```
+
+### Pkgfile
+
+Sync `pkgfile` database
+
+```sh
+sudo pkgfile -u
 ```
 
 ### i3 (Xorg) and display manager
