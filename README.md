@@ -13,7 +13,7 @@
 `pipewire-pulse`, ``
 
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex libinput xdotool wmctrl maim unclutter openssh wireless-regdb docker docker-compose pkgfile
+pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex xdotool wmctrl maim unclutter openssh wireless-regdb pkgfile
 ```
 
 ## Efibootmgr
@@ -157,30 +157,8 @@ sudo systemctl enable --now bluetooth
 
 ### Touchpad
 
-`/etc/X11/xorg.conf.d/30-touchpad.conf`:
-
-```sh
-Section "InputClass"
-    Identifier "touchpad"
-    Driver "libinput"
-    MatchIsTouchpad "on"
-    Option "Tapping" "on"
-    Option "TappingButtonMap" "lmr"
-EndSection
-```
-
-require `libinput-gestures` (AUR) add user to group input
-
-```sh
-sudo gpasswd -a $USER input
-```
-
-Could check configuration file in `config/libinput-gestures.conf`
-
-Start it:
-
-```sh
-libinput-gestures-setup autostart
+```bash
+systemctl enable touchegg
 ```
 
 ### Wifi
