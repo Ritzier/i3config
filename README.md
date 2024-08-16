@@ -13,7 +13,7 @@
 `pipewire-pulse`, ``
 
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex xdotool wmctrl maim unclutter openssh wireless-regdb pkgfile
+pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex xdotool wmctrl maim unclutter openssh wireless-regdb pkgfile zsh xsel xclip
 ```
 
 ## Efibootmgr
@@ -226,3 +226,13 @@ ADDN_HOSTS=
 python -m venv $HOME/python312
 pip install neovim
 ```
+
+### Zsh
+
+```bash
+chsh -s /bin/zsh
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+
