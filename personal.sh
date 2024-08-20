@@ -68,6 +68,10 @@ setup_touchegg() {
     fi
 }
 
+setup_pkgfile() {
+    sudo pkgfile -u
+}
+
 run() {
     setup_oh_my_zsh
     install_packages bash zsh python-virtualenv alacritty i3 rofi polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc
@@ -77,6 +81,7 @@ run() {
     setup_fcitx
     copy_configuration
     setup_touchegg
+    setup_pkgfile
     echo "Done"
 }
 
