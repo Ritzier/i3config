@@ -4,16 +4,12 @@
 `mkfs`: `mkfs.fat -F32`, `mkfs.ext4 /dev/nvme0n1p1`
 `pacstrap`
 `genfstab`
-`chroot`
+`arch-chroot`
 
 ## Basic package
 
-`linux`, `linux-headers`, `linux-firmware`, `base`, `base-devel`, `vim`, `git`,
-`i3`, `intel-ucode`, `xorg`, `network-manager`, `efibootmgr`, `pavucontrol`,
-`pipewire-pulse`, ``
-
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git i3 intel-ucode xorg networkmanager  efibootmgr pavucontrol pipewire-pulse ly dhcpcd adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd alacritty polybar fcitx5-im fcitx5-chinese-addons nautilus rustup go composer luarocks tree-sitter neovim python-virtualenv python-pip chromium rofi bluez bluez-utils bluez-obex xdotool wmctrl maim unclutter openssh wireless-regdb pkgfile zsh xsel xclip
+pacman -S linux linux-headers linux-firmware base base-devel vim git networkmanager efibootmgr ly dhcpcd bluez bluez-utils bluez-obex openssh wireless-regdb
 ```
 
 ## Efibootmgr
@@ -80,27 +76,7 @@ swapon /swapfile
 /swapfile none swap defaults 0 0
 ```
 
-### Pkgfile
-
-Sync `pkgfile` database
-
-```sh
-sudo pkgfile -u
-```
-
-### i3 (Xorg) and display manager
-
-Install dependencies:
-
-```sh
-pacman -S i3 xorg ly
-```
-
-enable display manager:
-
-```sh
-systemctl enable ly
-```
+````
 
 ### GPU Driver
 
@@ -114,7 +90,7 @@ Install graphic driver:
 ```sh
 pacman -S optimus-manager
 systemctl enable optimus-manager
-```
+````
 
 Need add `prime-offload` to configuration:
 
@@ -130,10 +106,6 @@ optimus-manager --status
 
 ### Fcitx5
 
-```sh
-pacman -S fcitx5-im fcitx5-chinese-addons
-```
-
 `/etc/environment`:
 
 ```sh
@@ -143,96 +115,9 @@ XMODIFIERS=@im=fcitx
 SDL_IM_MODULE=fcitx
 ```
 
-### Docker
-
-- systemctl
-- `usermod -aG docker $USER`
-
 ### Bluetooth
 
 ```sh
 sudo pacman -S bluez bluez-utils bluez-obex
 sudo systemctl enable --now bluetooth
 ```
-
-### Touchpad
-
-```bash
-systemctl enable touchegg
-```
-
-### Wifi
-
-Dependencies: `wireless-regdb`,`dnsmasq`, `iptables`, `wpa_supplicant`,
-`dhcpcd`, `firewalld`, `linux-wifi-hotspot`
-
-#### Enable 5Ghz
-
-Modified `/etc/conf.d/wireless-regdom`, uncomment it:
-
-Reboot it, and check country code with: `iw reg get`
-
-Show the band with: `iw list | grep -A 15 Frequencies:`
-
-#### Hotspot
-
-Require: `linux-wifi-hotspot`
-
-`systemctl enable create_ap` for startup
-
-example `/etc/create_ap.conf`:
-
-```sh
-CHANNEL=default
-GATEWAY=192.168.1.1
-WPA_VERSION=2
-ETC_HOSTS=0
-DHCP_DNS=gateway
-NO_DNS=0
-NO_DNSMASQ=0
-HIDDEN=0
-MAC_FILTER=0
-MAC_FILTER_ACCEPT=/etc/hostapd/hostapd.accept
-ISOLATE_CLIENTS=0
-SHARE_METHOD=nat
-IEEE80211N=0
-IEEE80211AC=0
-IEEE80211AX=1
-HT_CAPAB=[HT40+]
-VHT_CAPAB=
-DRIVER=nl80211
-NO_VIRT=0
-COUNTRY=
-FREQ_BAND=5
-NEW_MACADDR=
-DAEMONIZE=0
-DAEMON_PIDFILE=
-DAEMON_LOGFILE=/dev/null
-DNS_LOGFILE=
-NO_HAVEGED=0
-WIFI_IFACE=wlp41s0
-INTERNET_IFACE=enp48s0f3u1
-SSID=Hotspot
-PASSPHRASE=12345678
-USE_PSK=0
-ADDN_HOSTS=
-```
-
-## Other
-
-### Python venv
-
-```sh
-python -m venv $HOME/python312
-pip install neovim
-```
-
-### Zsh
-
-```bash
-chsh -s /bin/zsh
-
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-```
-
-
