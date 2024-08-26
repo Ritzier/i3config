@@ -1712,7 +1712,7 @@ EOF
 fi
 
 if [[ $IEEE80211N -eq 1 ]]; then
-    echo "ieee80211n" >>$CONFDIR/hostapd.conf
+    echo "ieee80211n=${IEEE80211N}" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ $IEEE80211AC -eq 1 ]]; then
@@ -1733,10 +1733,6 @@ fi
 
 if [[ -n "$VHT_OPER_CHWIDTH" ]]; then
     echo "vht_oper_chwidth=${VHT_OPER_CHWIDTH}" >>$CONFDIR/hostapd.conf
-fi
-
-if [[ $IEEE80211N -eq 1 ]] || [[ $IEEE80211AC -eq 1 ]]; then
-    echo "wmm_enabled=1" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ -n "$WMM_ENABLED" ]]; then
