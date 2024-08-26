@@ -655,6 +655,8 @@ HT_CAPAB='[HT40+]'
 VHT_CAPAB=
 VHT_OPER_CHWIDTH=1
 VHT_OPER_CENTR_FREQ_SEQ0_IDX=42
+HE_SU_BEAMFORMER=0
+HE_SU_BEAMFORMEE=0
 WMM_ENABLED=
 DRIVER=nl80211
 NO_VIRT=0
@@ -1737,6 +1739,14 @@ fi
 
 if [[ -n "$WMM_ENABLED" ]]; then
     echo "wmm_enabled=${WMM_ENABLED}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_SU_BEAMFORMER" ]]; then
+    echo "he_su_beamformer=${HE_SU_BEAMFORMER}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_SU_BEAMFORMEE" ]]; then
+    echo "he_su_beamformee=${HE_SU_BEAMFORMEE}" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ -n "$PASSPHRASE" ]]; then
