@@ -1731,7 +1731,7 @@ if [[ -n "$HT_CAPAB" ]]; then
     echo "ht_capab=${HT_CAPAB}" >>$CONFDIR/hostapd.conf
 fi
 
-if [[ -n "$VHT_OPER_CHWIDTH"]]; then
+if [[ -n "$VHT_OPER_CHWIDTH" ]]; then
     echo "vht_oper_chwidth=${VHT_OPER_CHWIDTH}" >>$CONFDIR/hostapd.conf
 fi
 
@@ -1776,7 +1776,6 @@ rsn_pairwise=CCMP
 EOF
     fi
 fi
-
 
 if [[ "$SHARE_METHOD" == "bridge" ]]; then
     echo "bridge=${BRIDGE_IFACE}" >>$CONFDIR/hostapd.conf
