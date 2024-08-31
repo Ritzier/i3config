@@ -676,7 +676,7 @@ REDIRECT_TO_LOCALHOST=0
 CONFIG_OPTS=(CHANNEL GATEWAY WPA_VERSION ETC_HOSTS DHCP_DNS NO_DNS NO_DNSMASQ HIDDEN MAC_FILTER MAC_FILTER_ACCEPT ISOLATE_CLIENTS
     SHARE_METHOD IEEE80211N IEEE80211AC IEEE80211AX HT_CAPAB VHT_CAPAB DRIVER NO_VIRT COUNTRY FREQ_BAND
     NEW_MACADDR DAEMONIZE DAEMON_PIDFILE DAEMON_LOGFILE DNS_LOGFILE NO_HAVEGED WIFI_IFACE INTERNET_IFACE
-    SSID PASSPHRASE USE_PSK ADDN_HOSTS
+    SSID PASSPHRASE USE_PSK ADDN_HOSTS 
     WMM_ENABLED VHT_OPER_CHWIDTH VHT_OPER_CENTR_FREQ_SEQ0_IDX HE_SU_BEAMFORMER HE_SU_BEAMFORMEE)
 
 FIX_UNMANAGED=0
@@ -1688,10 +1688,23 @@ ssid=${SSID}
 interface=${WIFI_IFACE}
 driver=${DRIVER}
 channel=${CHANNEL}
+chanlist=${CHANNEL}
 ctrl_interface=$CONFDIR/hostapd_ctrl
 ctrl_interface_group=0
 ignore_broadcast_ssid=$HIDDEN
 ap_isolate=$ISOLATE_CLIENTS
+
+# TEST
+tx_queue_data2_burst=2.0
+uapsd_advertisement_enabled=1
+utf8_ssid=1
+multi_ap=0
+bss_load_update_period=60
+chan_util_avg_period=600
+disassoc_low_ack=0
+skip_inactivity_poll=1
+preamble=1
+he_bss_color=37
 EOF
 
 if [[ -n "$COUNTRY" ]]; then
@@ -1724,6 +1737,10 @@ fi
 
 if [[ $IEEE80211AX -eq 1 ]]; then
     echo "ieee80211ax=1" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ $IEEE80211H -eq 1 ]]; then
+    echo "ieee80211h=1" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ -n "$VHT_CAPAB" ]]; then
