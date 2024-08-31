@@ -27,6 +27,16 @@ firewall-cmd --reload
 
 `/etc/sysctl.d/`
 
+Enable ip forward
+
+```sh
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.forwarding = 1
+net.ipv6.conf.all.forwarding = 1
+```
+
+Improvent:
+
 ```sh
 net.core.rmem_default = 1048576
 net.core.rmem_max = 16777216
