@@ -634,6 +634,7 @@ networkmanager_wait_until_unmanaged() {
     return 0
 }
 
+HW_MODE=
 CHANNEL=default
 GATEWAY=192.168.12.1
 WPA_VERSION=2
@@ -649,15 +650,24 @@ MAC_FILTER_ACCEPT=/etc/hostapd/hostapd.accept
 ISOLATE_CLIENTS=0
 SHARE_METHOD=nat
 IEEE80211N=0
+IEEE80211D=0
+IEEE80211H=0
 IEEE80211AC=0
 IEEE80211AX=0
 HT_CAPAB='[HT40+]'
 VHT_CAPAB=
 VHT_OPER_CHWIDTH=
 VHT_OPER_CENTR_FREQ_SEG0_IDX=
+HT_OPER_CHWIDTH=
 HE_OPER_CENTR_FREQ_SEG0_IDX=
 HE_SU_BEAMFORMER=
 HE_SU_BEAMFORMEE=
+HE_MU_BEAMFORMER=
+HE_BSS_COLOR=
+HE_TWT_REQUIRED=
+HE_RTS_THRESHOLD=
+BEACON_INT=
+AUTH_ALGS=
 WMM_ENABLED=
 DRIVER=nl80211
 NO_VIRT=0
@@ -675,10 +685,13 @@ HOSTAPD_DEBUG_ARGS=
 REDIRECT_TO_LOCALHOST=0
 
 CONFIG_OPTS=(CHANNEL GATEWAY WPA_VERSION ETC_HOSTS DHCP_DNS NO_DNS NO_DNSMASQ HIDDEN MAC_FILTER MAC_FILTER_ACCEPT ISOLATE_CLIENTS
-    SHARE_METHOD IEEE80211N IEEE80211AC IEEE80211AX HT_CAPAB VHT_CAPAB DRIVER NO_VIRT COUNTRY FREQ_BAND
+    SHARE_METHOD IEEE80211N IEEE80211AC IEEE80211AX  IEEE80211D IEEE80211H
+    HT_CAPAB VHT_CAPAB DRIVER NO_VIRT COUNTRY FREQ_BAND
     NEW_MACADDR DAEMONIZE DAEMON_PIDFILE DAEMON_LOGFILE DNS_LOGFILE NO_HAVEGED WIFI_IFACE INTERNET_IFACE
     SSID PASSPHRASE USE_PSK ADDN_HOSTS
-    WMM_ENABLED VHT_OPER_CHWIDTH VHT_OPER_CENTR_FREQ_SEG0_IDX HE_OPER_CENTR_FREQ_SEG0_IDX HE_SU_BEAMFORMER HE_SU_BEAMFORMEE)
+    WMM_ENABLED VHT_OPER_CHWIDTH VHT_OPER_CENTR_FREQ_SEG0_IDX HE_OPER_CENTR_FREQ_SEG0_IDX HE_SU_BEAMFORMER HE_SU_BEAMFORMEE
+    HE_BSS_COLOR HT_OPER_CHWIDTH HE_MU_BEAMFORMER HE_BSS_COLOR HE_TWT_REQUIRED HE_RTS_THRESHOLD BEACON_INT HW_MODE
+)
 
 FIX_UNMANAGED=0
 LIST_RUNNING=0
@@ -1708,16 +1721,11 @@ he_bss_color=37
 EOF
 
 if [[ -n "$COUNTRY" ]]; then
-    cat <<EOF >>$CONFDIR/hostapd.conf
-country_code=${COUNTRY}
-ieee80211d=1
-EOF
+    echo "country_code=${COUNTRY}" >>$CONFDIR/hostapd.conf
 fi
 
-if [[ $FREQ_BAND == 2.4 ]]; then
-    echo "hw_mode=g" >>$CONFDIR/hostapd.conf
-else
-    echo "hw_mode=a" >>$CONFDIR/hostapd.conf
+if [[ -n "$HW_MODE" ]]; then
+    echo "hw_mode=${HW_MODE}" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ $MAC_FILTER -eq 1 ]]; then
@@ -1729,6 +1737,10 @@ fi
 
 if [[ $IEEE80211N -eq 1 ]]; then
     echo "ieee80211n=${IEEE80211N}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ $IEEE80211D -eq 1 ]]; then
+    echo "ieee80211d=${IEEE80211D}" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ $IEEE80211AC -eq 1 ]]; then
@@ -1755,6 +1767,10 @@ if [[ -n "$VHT_OPER_CHWIDTH" ]]; then
     echo "vht_oper_chwidth=${VHT_OPER_CHWIDTH}" >>$CONFDIR/hostapd.conf
 fi
 
+if [[ -n "$HT_OPER_CHWIDTH" ]]; then
+    echo "ht_oper_chwidth=${HT_OPER_CHWIDTH}" >>$CONFDIR/hostapd.conf
+fi
+
 if [[ -n "$HE_OPER_CENTR_FREQ_SEG0_IDX" ]]; then
     echo "he_oper_centr_freq_seg0_idx=${HE_OPER_CENTR_FREQ_SEG0_IDX}" >>$CONFDIR/hostapd.conf
 fi
@@ -1773,6 +1789,26 @@ fi
 
 if [[ -n "$HE_SU_BEAMFORMEE" ]]; then
     echo "he_su_beamformee=${HE_SU_BEAMFORMEE}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_MU_BEAMFORMEE" ]]; then
+    echo "he_mu_beamformee=${HE_MU_BEAMFORMEE}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_BSS_COLOR" ]]; then
+    echo "he_bss_color=${HE_BSS_COLOR}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_TWT_REQUIRED" ]]; then
+    echo "he_twt_required=${HE_TWT_REQUIRED}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$HE_RTS_THRESHOLD" ]]; then
+    echo "he_rts_threshold=${HE_RTS_THRESHOLD}" >>$CONFDIR/hostapd.conf
+fi
+
+if [[ -n "$BEACON_INT" ]]; then
+    echo "beacon_int=${BEACON_INT}" >>$CONFDIR/hostapd.conf
 fi
 
 if [[ -n "$PASSPHRASE" ]]; then
