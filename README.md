@@ -121,3 +121,13 @@ SDL_IM_MODULE=fcitx
 sudo pacman -S bluez bluez-utils bluez-obex
 sudo systemctl enable --now bluetooth
 ```
+
+### Default browser
+
+Modified `$HOME/.config/mimeapps.list`
+
+```dosini
+[Default Applications]
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/http=firefox.desktop
+```
