@@ -1,5 +1,5 @@
 configuration {
-  modi: "drun,window";
+  modi: "drun,window,Font:~/.config/rofi/change-font.sh";
   font: "JetBrains Mono Nerd Font 12";
   show-icons: true;
   combi-modi: "window,drun,run";
