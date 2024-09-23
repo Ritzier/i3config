@@ -20,6 +20,5 @@ else
     sed -i "s/^normal.family = .*/normal.family = \"$selected_font\"/" "$CONFIG_FILE"
     sed -i "s/^bold.family = .*/bold.family = \"$selected_font\"/" "$CONFIG_FILE"
     sed -i "s/^italic.family = .*/italic.family = \"$selected_font\"/" "$CONFIG_FILE"
-    sed -i "s/^bold_italic.family = .*/bold_italic.family = \"$selected_font\"/" "$CONFIG_FILE"
 
 fi
