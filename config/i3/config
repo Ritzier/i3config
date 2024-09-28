@@ -14,8 +14,8 @@ exec --no-startup-id unclutter -idle 1 &
 exec_always --no-startup-id $HOME/.config/polybar/polybar_run.sh
 
 # Personal bind
-bindsym $mod+shift+p exec --no-startup-id maim --select "$HOME/Pictures/$(date).png"
-bindsym $mod+p exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).png"
+bindsym $mod+shift+p exec --no-startup-id maim --select "$HOME/Pictures/$(date +'%d-%m-%Y: %H-%M-%S').png"
+bindsym $mod+p exec --no-startup-id maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date +'%d-%m-%Y: %H-%M-%S').png"
 #Disable Title bar
 for_window [class="^.*"] border pixel 4
 default_border pixel 2
