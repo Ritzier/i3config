@@ -19,7 +19,7 @@ efibootmgr --create \
 --disk /dev/sda --part 1 \
 --label "Arch EFI" \
 --loader /vmlinuz-linux \
---unicode 'root=UUID=b2978444-769b-4d1b-8061-c1ac685e5fc7 rw loglevel=3 quiet splash reboot=bios initrd=\initramfs-linux.img'
+--unicode 'root=UUID=b2978444-769b-4d1b-8061-c1ac685e5fc7 rw loglevel=3 quiet splash initrd=\initramfs-linux.img'
 ```
 
 use `blkid` just output uuid of specific partition or get the UUID from
