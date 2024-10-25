@@ -21,8 +21,8 @@ set_hosts() {
 }
 
 set_host() {
-    set_hostname $1
-    set_hosts $1
+    set_hostname "$1"
+    set_hosts "$1"
 }
 
 set_timedatectl
