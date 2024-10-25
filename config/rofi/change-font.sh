@@ -2,7 +2,7 @@
 
 # Get all font include "Nerd Font"
 # Store the output in an array
-mapfile -t NERD_FONTS < <(fc-list --format="%{family[0]}\n" | sort | uniq | grep -E "Nerd Font")
+mapfile -t NERD_FONTS < <(fc-list --format="%{family[0]}\n" | sort | uniq | grep -E "Nerd Font" | grep "Propo")
 
 # Change `normal`, `bold`, `italic`, `bold_italic` to `$1`
 alacritty_fonts()
@@ -19,12 +19,9 @@ alacritty_fonts()
 # Rofi script
 select_theme()
 {
-    local MORE_FLAGS=(-dmenu)
-    local CUR="default"
     declare -i SELECTED
     while true
     do
-        declare -i RTS
         declare -i RES
         # RES=$(echo "$nerd_fonts" | rofi -dmenu -format i -i -p "Select a Nerd Font" -cycle -selected_row "${SELECTED}")
         RES=$(printf "%s\n" "${NERD_FONTS[@]}" | rofi -dmenu -format i -i -p "Select a Nerd Font" -cycle -selected-row "${SELECTED}")
