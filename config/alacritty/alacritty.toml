@@ -1,12 +1,10 @@
-import = [
-	"~/.config/alacritty/catppuccin-mocha.toml"
-]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
 
 [font]
 
-normal.family = "JetBrainsMono NF"
-bold.family = "JetBrainsMono NF"
-italic.family = "JetBrainsMono NF"
-bold_italic.family = "JetBrainsMono NF"
+normal.family = "ComicShannsMono Nerd Font Propo"
+bold.family = "ComicShannsMono Nerd Font Propo"
+italic.family = "ComicShannsMono Nerd Font Propo"
+bold_italic.family = "ComicShannsMono Nerd Font Propo"
 
 size = 12
