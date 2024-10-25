@@ -6,17 +6,17 @@ setup_oh_my_zsh() {
     fi
 
     echo "Copying zshrc configuration"
-    cp ./dot/zshrc $HOME/.zshrc
+    cp ./dot/zshrc "$HOME"/.zshrc
 }
 
 install_packages() {
-    sudo pacman -S $@
+    sudo pacman -S $"@"
     # echo ${packages}
 }
 
 python_virtualenv() {
     if [ ! -d "${1}" ]; then
-        python -m venv $1
+        python -m venv "$1"
         echo "Setup python virtualenv successful"
     else
         echo "Python Virtualenv already setup"
@@ -34,10 +34,10 @@ oh_my_zsh() {
 }
 
 zsh_theme() {
-    zsh_theme_file=$HOME/.oh-my-zsh/themes/ritz.zsh-theme
-    if [ ! -f $zsh_theme_file ]; then
+    zsh_theme_file="$HOME"/.oh-my-zsh/themes/ritz.zsh-theme
+    if [ ! -f "$zsh_theme_file" ]; then
         git clone https://github.com/Ritzier/ritz.zsh-theme --depth=1 ./theme
-        cp theme/ritz.zsh-theme $zsh_theme_file
+        cp theme/ritz.zsh-theme "$zsh_theme_file"
         rm -rf ./theme
         echo "Installed Zsh Theme successfully"
     else
@@ -46,7 +46,7 @@ zsh_theme() {
 }
 
 setup_fcitx() {
-    if [ ! -d $HOME/.local/share/fcitx5/themes ]; then
+    if [ ! -d "$HOME"/.local/share/fcitx5/themes ]; then
         git clone https://github.com/catppuccin/fcitx5.git
         mkdir -p ~/.local/share/fcitx5/themes/
         cp -r ./fcitx5/src/* ~/.local/share/fcitx5/themes
@@ -58,12 +58,12 @@ setup_fcitx() {
 }
 
 copy_configuration() {
-    cp -r ./config/* $HOME/.config/*
+    cp -r ./config/* "$HOME"/.config/*
 }
 
 setup_touchegg() {
-    if [ ! -f $HOME/.config/touchegg/touchegg.conf ]; then
-        cp -r /usr/share/touchegg $HOME/.config/
+    if [ ! -f "$HOME"/.config/touchegg/touchegg.conf ]; then
+        cp -r /usr/share/touchegg "$HOME"/.config/
         sudo systemctl enable touchegg
     fi
 }
@@ -75,7 +75,7 @@ setup_pkgfile() {
 run() {
     setup_oh_my_zsh
     install_packages bash zsh python-virtualenv alacritty i3 rofi polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd
-    python_virtualenv $HOME/python312/
+    python_virtualenv "$HOME"/python312/
     oh_my_zsh
     zsh_theme
     setup_fcitx
