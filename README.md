@@ -9,7 +9,7 @@
 ## Basic package
 
 ```sh
-pacman -S linux linux-headers linux-firmware base base-devel vim git networkmanager efibootmgr ly dhcpcd bluez bluez-utils bluez-obex openssh wireless-regdb
+pacman -S linux linux-headers linux-firmware base base-devel vim git networkmanager efibootmgr lemurs dhcpcd bluez bluez-utils bluez-obex openssh wireless-regdb
 ```
 
 ## Efibootmgr

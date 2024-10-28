@@ -25,5 +25,9 @@ set_host() {
     set_hosts "$1"
 }
 
+set_lemurs() {
+    cp ./etc/lemurs/wms/i3.sh /etc/lemurs/wms
+}
+
 set_timedatectl
 set_host "linux"
