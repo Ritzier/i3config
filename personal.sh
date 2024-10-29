@@ -1,88 +1,108 @@
 #!/bin/bash
 
-setup_oh_my_zsh() {
-    if [ ! -d "$HOME/.oh-my-zsh/" ]; then
+source ./components.sh
+
+function dialog_i3 {
+    check_packages i3 polybar rofi ttf-jetbrains-mono-nerd
+    cp -rf ./config/i3 ./config/rofi ./config/polybar "$HOME"/.config/
+
+    alert_message "i3 configuration done!"
+}
+
+function dialog_alacritty {
+    check_packages alacritty otf-comicshanns-nerd
+    cp -rf ./config/alacritty/ "$HOME"/.config/
+    alert_message "Alacritty configuration done"
+}
+
+function dialog_zsh {
+    check_packages zsh
+
+    if ! [[ -d "$HOME/.oh-my-zsh" ]]; then
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
 
-    echo "Copying zshrc configuration"
-    cp ./dot/zshrc "$HOME"/.zshrc
-}
+    cp ./dot/zshrc "$HOME/.zshrc"
 
-install_packages() {
-    sudo pacman -S $"@"
-    # echo ${packages}
-}
-
-python_virtualenv() {
-    if [ ! -d "${1}" ]; then
-        python -m venv "$1"
-        echo "Setup python virtualenv successful"
-    else
-        echo "Python Virtualenv already setup"
+    if ! [[ -f "$HOME/.oh-my-zsh/themes/ritz.zsh-theme" ]]; then
+        git clone https://github.com/ritzier/ritz.zsh-theme theme
+        cp theme/ritz.zsh-theme "$HOME/.oh-my-zsh/themes"
     fi
-    echo "Don't forget to source Python Virtualenv in the .zshrc"
-}
 
-oh_my_zsh() {
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        echo "Oh-My-Zsh Installed Successfully"
-    else
-        echo "Oh-My-Zsh Installed"
-    fi
-}
-
-zsh_theme() {
-    zsh_theme_file="$HOME"/.oh-my-zsh/themes/ritz.zsh-theme
-    if [ ! -f "$zsh_theme_file" ]; then
-        git clone https://github.com/Ritzier/ritz.zsh-theme --depth=1 ./theme
-        cp theme/ritz.zsh-theme "$zsh_theme_file"
+    if [[ -d ./theme ]]; then
         rm -rf ./theme
-        echo "Installed Zsh Theme successfully"
-    else
-        echo "Zsh Theme Already Installed"
     fi
+
+    alert_message "Zsh configuration done!"
 }
 
-setup_fcitx() {
-    if [ ! -d "$HOME"/.local/share/fcitx5/themes ]; then
-        git clone https://github.com/catppuccin/fcitx5.git
-        mkdir -p ~/.local/share/fcitx5/themes/
-        cp -r ./fcitx5/src/* ~/.local/share/fcitx5/themes
-        rm -rf fcitx5
-        echo "Fcitx5 Theme Setup Successfully"
-    else
-        echo "Fcitx5 Theme Already Setup"
-    fi
+# For Fcitx5 colorscheme
+function dialog_fcitx5 {
+    git clone https://github.com/catppuccin/fcitx5.git
+    mkdir -p ~/.local/share/fcitx5/themes/
+    cp -r ./fcitx5/src/* ~/.local/share/fcitx5/themes
+    rm -rf fcitx5
+    alert_message "Fcitx5 configuration done!"
 }
 
-copy_configuration() {
-    cp -r ./config/* "$HOME"/.config/*
+function dialog_easyeffect {
+    check_packages easyeffects
+    cp -rf ./config/easyeffects "$HOME/.config/"
+    alert_message "Easyeffect configuration done!"
 }
 
-setup_touchegg() {
-    if [ ! -f "$HOME"/.config/touchegg/touchegg.conf ]; then
-        cp -r /usr/share/touchegg "$HOME"/.config/
-        sudo systemctl enable touchegg
-    fi
+function dialog_basic_packages {
+    check_packages bash zsh python-virtualenv alacrity i3 rofi polybar rofi  \
+        polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse \
+        adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk \
+        noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd \
+        polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi \
+        xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects \
+        lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd
+
+    alert_message "Installed all packages"
 }
 
-setup_pkgfile() {
-    sudo pkgfile -u
+function personal_menu {
+    while true; do
+        dialog --title "System" --menu "Choose an option:" 15 50 7 \
+            1 "Basic Packages" \
+            2 "i3" \
+            3 "Alacritty" \
+            4 "Zsh" \
+            5 "Fcitx5" \
+            6 "EasyEffect" \
+            7 "Exit" 2> personal_choice.txt
+
+        SYSTEM_CHOICE=$(< personal_choice.txt)
+
+        case $SYSTEM_CHOICE in
+            1)
+                dialog_basic_packages
+                ;;
+            2)
+                dialog_i3
+                ;;
+            3)
+                dialog_alacritty
+                ;;
+            4)
+                dialog_zsh
+                ;;
+            5)
+                dialog_fcitx6
+                ;;
+            6)
+                dialog_easyeffect
+                ;;
+            7)
+                break
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    rm -f personal_choice.txt
 }
 
-run() {
-    setup_oh_my_zsh
-    install_packages bash zsh python-virtualenv alacritty i3 rofi polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd
-    python_virtualenv "$HOME"/python312/
-    oh_my_zsh
-    zsh_theme
-    setup_fcitx
-    copy_configuration
-    setup_touchegg
-    setup_pkgfile
-    echo "Done"
-}
-
-run
