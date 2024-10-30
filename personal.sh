@@ -63,16 +63,55 @@ function dialog_basic_packages {
     alert_message "Installed all packages"
 }
 
+function dialog_neovim {
+    path="$HOME/.config/nvim"
+    REPOS_SSH="git@github.com:Ritzier/nvim"
+    REPOS_HTTPS="https://github.com/ritzier/nvim"
+
+    function clone_through_ssh {
+        git clone $REPOS_SSH --depth=1 "$path"
+    }
+
+    function clone_through_https {
+        git clone $REPOS_HTTPS --depth=1 "$path"
+    }
+
+    check_packages neovim rust-analyzer tree-sitter taplo rust-analyzer ripgrep \
+        fd luarocks lua51
+
+    dialog --title "Neovim" --menu "Choose an option:" 15 50 3 \
+        1 "git@github.com:Ritzier/nvim" \
+        2 "https://github.com/Ritzier/nvim" \
+        3 "Exit" 2> neovim_choice.txt
+
+    CHOICE=$(< neovim_choice.txt)
+
+    case $CHOICE in
+        1)
+            clone_through_ssh
+            ;;
+        2)
+            clone_through_https
+            ;;
+        *)
+            return
+            ;;
+    esac
+
+    alert_message "Neovim configuration done!"
+}
+
 function personal_menu {
     while true; do
-        dialog --title "System" --menu "Choose an option:" 15 50 7 \
+        dialog --title "System" --menu "Choose an option:" 15 50 8 \
             1 "Basic Packages" \
             2 "i3" \
             3 "Alacritty" \
             4 "Zsh" \
-            5 "Fcitx5" \
-            6 "EasyEffect" \
-            7 "Exit" 2> personal_choice.txt
+            5 "Neovim" \
+            6 "Fcitx5" \
+            7 "EasyEffect" \
+            8 "Exit" 2> personal_choice.txt
 
         SYSTEM_CHOICE=$(< personal_choice.txt)
 
@@ -90,12 +129,15 @@ function personal_menu {
                 dialog_zsh
                 ;;
             5)
-                dialog_fcitx6
+                dialog_neovim
                 ;;
             6)
-                dialog_easyeffect
+                dialog_fcitx7
                 ;;
             7)
+                dialog_easyeffect
+                ;;
+            8)
                 break
                 ;;
             *)
