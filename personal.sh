@@ -52,7 +52,7 @@ function dialog_easyeffect {
 }
 
 function dialog_basic_packages {
-    check_packages bash zsh python-virtualenv alacrity i3 rofi polybar rofi  \
+    check_packages bash zsh python-virtualenv alacritty i3 rofi polybar rofi  \
         polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse \
         adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk \
         noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd \
