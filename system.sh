@@ -220,6 +220,14 @@ function dialog_libinput {
     alert_message "Libinput configuration done!"
 }
 
+function dialog_bluetooth {
+    check_packages bluez bluez-util
+
+    systemctl enable bluetooth
+
+    alert_message "Bluetooth configuration done!"
+}
+
 function system_menu {
     if [[ $EUID -ne 0 ]]; then
         dialog --title "Permission Required" --msgbox "You need root privileges to create an EFI boot enty." 10 50
@@ -227,7 +235,7 @@ function system_menu {
     fi
 
     while true; do
-        dialog --title "System" --menu "Choose an option:" 15 50 11 \
+        dialog --title "System" --menu "Choose an option:" 15 50 12 \
             1 "Efibootmgr" \
             2 "Create Swap" \
             3 "Set hostname" \
@@ -238,7 +246,8 @@ function system_menu {
             8 "Game Compatibility" \
             9 "Network" \
             10 "Libinput" \
-            11 "Exit" 2> system_choice.txt
+            11 "Bluetooth" \
+            12 "Exit" 2> system_choice.txt
 
         SYSTEM_CHOICE=$(< system_choice.txt)
 
@@ -274,6 +283,9 @@ function system_menu {
                 dialog_libinput
                 ;;
             11)
+                dialog_bluetooth
+                ;;
+            12)
                 break
                 ;;
             *)
