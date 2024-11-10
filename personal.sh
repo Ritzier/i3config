@@ -58,7 +58,8 @@ function dialog_basic_packages {
         noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd \
         polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi \
         xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects \
-        lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd
+        lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd xorg xorg-server \
+        rustup 
 
     alert_message "Installed all packages"
 }

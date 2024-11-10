@@ -212,6 +212,13 @@ function dialog_network {
     alert_message "Network configuration done!"
 }
 
+function dialog_libinput {
+    check_packages libinput
+
+    cp ./etc/X11/xorg.config.d/40-touchpad.conf /etc/X11/xorg.conf.d/40-touchpad.conf
+
+    alert_message "Libinput configuration done!"
+}
 
 function system_menu {
     if [[ $EUID -ne 0 ]]; then
@@ -220,7 +227,7 @@ function system_menu {
     fi
 
     while true; do
-        dialog --title "System" --menu "Choose an option:" 15 50 10 \
+        dialog --title "System" --menu "Choose an option:" 15 50 11 \
             1 "Efibootmgr" \
             2 "Create Swap" \
             3 "Set hostname" \
@@ -230,7 +237,8 @@ function system_menu {
             7 "Optimus Manager" \
             8 "Game Compatibility" \
             9 "Network" \
-            10 "Exit" 2> system_choice.txt
+            10 "Libinput" \
+            11 "Exit" 2> system_choice.txt
 
         SYSTEM_CHOICE=$(< system_choice.txt)
 
@@ -263,6 +271,9 @@ function system_menu {
                 dialog_network
                 ;;
             10)
+                dialog_libinput
+                ;;
+            11)
                 break
                 ;;
             *)
