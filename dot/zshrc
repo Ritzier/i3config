@@ -6,7 +6,7 @@ export DOCKER_BUILDKIT=0
 
 ZSH_THEME="ritz"
 
-plugins=(git copypath)
+plugins=(git copypath copyfile)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/python312/bin/activate
