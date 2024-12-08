@@ -13,3 +13,5 @@ source $HOME/python312/bin/activate
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
 alias so="source $HOME/.zshrc"
+alias getcode="bash $HOME/scripts/getcode.sh"
+alias countline="bash $HOME/scripts/countline.sh"
