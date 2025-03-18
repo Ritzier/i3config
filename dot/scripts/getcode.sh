@@ -1,41 +1,34 @@
+
 #!/bin/bash
 
-# Function to check if a file is ignored by .gitignore or has certain extensions
-is_ignored() {
-    local file="$1"
-    local extension="${file##*.}"
+main() {
+    local dir="${1:-./}"
 
-    # Check if the file is ignored by .gitignore
-    git check-ignore -q "$file" 2>/dev/null && return 0
+    # Ignore specific file extensions and .git directory
+    local ignore_extensions=(-not \( -name "*.png" -o -name "*.mp4" -o \
+        -name "*.mp3" -o -name "*.jpg" -o -name "*.jpeg" \))
 
-    # Ignore files with specific extensions (png, jpg, ico)
-    case "$extension" in
-        png|jpg|ico|jpeg|lockb) return 0 ;;
-    esac
+    # Check if directory is a Git repository
+    local git_ignore=false
+    if git -C "$dir" rev-parse 2>/dev/null; then
+        git_ignore=true
+    fi
 
-    return 1
-}
+    # Find and process files with .git exclusion
+    find "$dir" \
+        -name ".git" -prune -o \
+        -type f "${ignore_extensions[@]}" -print0 | while IFS= read -r -d $'\0' file; do
 
-# Function to process files and directories
-process_directory() {
-    local dir="$1"
-    local indent="$2"
-
-    # Loop through all files and directories in the given directory
-    for item in "$dir"/*; do
-        # Get the relative path
-        local relative_path="${item#./}"
-
-        if [ -f "$item" ] && ! is_ignored "$relative_path"; then
-            echo "${indent}=== $relative_path ==="
-            cat "$item"
-            echo ""
-        elif [ -d "$item" ] && ! is_ignored "$relative_path"; then
-            echo "${indent}Directory: $relative_path"
-            process_directory "$item" "  $indent"
+        # Skip Git-ignored files if in repository
+        if $git_ignore && git -C "$dir" check-ignore -q "$file"; then
+            continue
         fi
+
+        # Print file header and contents
+        printf "\n\e[1;33m=== %s ===\e[0m\n" "$file"
+        cat -- "$file"
     done
 }
 
-# Start processing from the current directory or a specified directory
-process_directory "${1:-.}" ""
+main "${1}"
+
