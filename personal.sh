@@ -3,8 +3,8 @@
 source ./components.sh
 
 function dialog_i3 {
-    check_packages i3 polybar rofi ttf-jetbrains-mono-nerd
-    cp -rf ./config/i3 ./config/rofi ./config/polybar "$HOME"/.config/
+    check_packages i3 polybar rofi ttf-jetbrains-mono-nerd picom
+    cp -rf ./config/i3 ./config/rofi ./config/polybar ./config/picom.conf "$HOME"/.config/
 
     alert_message "i3 configuration done!"
 }
@@ -59,7 +59,7 @@ function dialog_basic_packages {
         polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi \
         xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects \
         lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd xorg xorg-server \
-        rustup kwindowsystem
+        rustup kwindowsystem picom
 
     alert_message "Installed all packages"
 }
