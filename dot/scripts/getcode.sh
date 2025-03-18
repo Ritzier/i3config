@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 main() {
@@ -6,7 +5,7 @@ main() {
 
     # Ignore specific file extensions and .git directory
     local ignore_extensions=(-not \( -name "*.png" -o -name "*.mp4" -o \
-        -name "*.mp3" -o -name "*.jpg" -o -name "*.jpeg" \))
+        -name "*.mp3" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.ttf" \))
 
     # Check if directory is a Git repository
     local git_ignore=false
@@ -24,11 +23,15 @@ main() {
             continue
         fi
 
+        # Skip binary files based on MIME type
+        if file -i "$file" | grep -q 'charset=binary'; then
+            continue
+        fi
+
         # Print file header and contents
-        printf "\n\e[1;33m=== %s ===\e[0m\n" "$file"
+        printf "=== %s ===" "$file"
         cat -- "$file"
     done
 }
 
 main "${1}"
-
