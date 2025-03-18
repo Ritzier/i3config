@@ -59,7 +59,7 @@ function dialog_basic_packages {
         polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi \
         xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects \
         lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd xorg xorg-server \
-        rustup 
+        rustup kwindowsystem
 
     alert_message "Installed all packages"
 }

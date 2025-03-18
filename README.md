@@ -1,10 +1,6 @@
 # i3config
 
-`cfdisk`
-`mkfs`: `mkfs.fat -F32`, `mkfs.ext4 /dev/nvme0n1p1`
-`pacstrap`
-`genfstab`
-`arch-chroot`
+`cfdisk` `mkfs`: `mkfs.fat -F32`, `mkfs.ext4 /dev/nvme0n1p1` `pacstrap` `genfstab` `arch-chroot`
 
 ## Basic package
 
@@ -22,8 +18,7 @@ efibootmgr --create \
 --unicode 'root=UUID=b2978444-769b-4d1b-8061-c1ac685e5fc7 rw loglevel=3 quiet splash initrd=\initramfs-linux.img'
 ```
 
-use `blkid` just output uuid of specific partition or get the UUID from
-`/etc/fstab`:
+use `blkid` just output uuid of specific partition or get the UUID from `/etc/fstab`:
 
 ```sh
 blkid -s UUID -o value /dev/nvme0n1p1
@@ -105,6 +100,12 @@ optimus-manager --status
 ```
 
 ### Fcitx5
+
+packages:
+
+```sh
+fcitx5-im fcitx5-chinese-addons kwindowsystem
+```
 
 `/etc/environment`:
 
