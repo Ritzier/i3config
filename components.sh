@@ -33,7 +33,5 @@ function check_packages() {
         # Use --needed to avoid reinstalling already installed packages and wait for completion
         sudo pacman -S --needed --noconfirm "${missing_packages[@]}" && \
             dialog --title "Success" --msgbox "The following packages were installed: ${missing_packages[*]}" 10 50
-    else
-        dialog --msgbox "All packages are already installed." 10 50
     fi
 }
