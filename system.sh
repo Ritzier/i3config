@@ -23,14 +23,12 @@ function dialog_efibootmgr {
         read -r label
         read -r uuid
 
-        check_empty_variable disk part label uuid
-
         # Call efibootmgr with the provided inputs
         efibootmgr --create \
-            --disk "$disk" --part "$part" \
-            --label "$label" \
+            --disk "${disk}" --part "${part}" \
+            --label "${label}" \
             --loader /vmlinuz-linux \
-            --unicode "root=UUID=\"$uuid\" rw loglevel=3 quiet splash initrd=\\initramfs-linux.img"
+            --unicode "root=UUID=${root_uuid} rw loglevel=3 initrd=\initramfs-linux.img"
 
     }
 
@@ -221,7 +219,7 @@ function dialog_libinput {
 }
 
 function dialog_bluetooth {
-    check_packages bluez bluez-util
+    check_packages bluez bluez-utils
 
     systemctl enable bluetooth
 
