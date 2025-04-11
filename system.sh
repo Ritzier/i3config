@@ -5,6 +5,8 @@ source ./components.sh
 function dialog_efibootmgr {
     exec 3>&1
 
+    check_packages efibootmgr
+
     root_device=$(lsblk -no PKNAME "$(findmnt -n -o SOURCE /)")
     full_root_device="/dev/$root_device"
 
