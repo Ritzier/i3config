@@ -13,6 +13,10 @@ main() {
         git_ignore=true
     fi
 
+    echo "File struct"
+    tree  "${dir}"
+    echo ""
+
     # Find and process files with .git exclusion
     find "$dir" \
         -name ".git" -prune -o \
@@ -29,7 +33,9 @@ main() {
         fi
 
         # Print file header and contents
+        echo ""
         printf "=== %s ===" "$file"
+        echo ""
         cat -- "$file"
     done
 }
