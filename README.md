@@ -132,3 +132,25 @@ Modified `$HOME/.config/mimeapps.list`
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 ```
+
+### Rust + Mold
+
+Required packages:
+
+```sh
+pacman -S rustup mold clang
+```
+
+Add toolchain:
+
+```sh
+rustup default stable
+```
+
+`~/.cargo/config.toml`:
+
+```toml
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/usr/bin/mold"]
+```
