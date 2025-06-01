@@ -39,6 +39,42 @@ function dialog_efibootmgr {
     exec 3>&-
 }
 
+function dialog_efibootmgr_nvidia {
+    exec 3>&1
+
+    check_packages efibootmgr
+
+    root_device=$(lsblk -no PKNAME "$(findmnt -n -o SOURCE /)")
+    full_root_device="/dev/$root_device"
+
+    root_uuid=$(findmnt -n -o UUID /)
+
+    dialog --separate-widget $'\n' \
+        --title "EFI Boot Entry with Nvidia DRM" \
+        --form "" 0 0 0 \
+        "Disk:" 1 1 "$full_root_device" 1 10 30 0 \
+        "Partition:" 2 1 "1" 2 10 30 0 \
+        "Label:" 3 1 "Arch EFI" 3 10 30 0 \
+        "Root UUID:" 4 1 "$root_uuid" 4 10 30 0 \
+        2>&1 1>&3 | {
+        read -r disk
+        read -r part
+        read -r label
+        read -r uuid
+
+        # Call efibootmgr with the provided inputs
+        efibootmgr --create \
+            --disk "${disk}" --part "${part}" \
+            --label "${label}" \
+            --loader /vmlinuz-linux \
+            --unicode "root=UUID=${root_uuid} rw loglevel=3 initrd=\initramfs-linux.img nvidia-drm.modeset=1"
+    }
+
+    alert_message "EFI boot entry created successful!"
+
+    exec 3>&-
+}
+
 function dialog_swap {
     exec 3>&1
 
@@ -281,39 +317,42 @@ function system_menu {
                 dialog_efibootmgr
                 ;;
             2)
-                dialog_swap
+                dialog_efibootmgr_nvidia
                 ;;
             3)
-                dialog_hostname
+                dialog_swap
                 ;;
             4)
-                dialog_mirrorlist
+                dialog_hostname
                 ;;
             5)
-                dialog_fcitx6_setup
+                dialog_mirrorlist
                 ;;
             6)
-                dialog_wireless_regdb
+                dialog_fcitx7_setup
                 ;;
             7)
-                dialog_optimus_manager
+                dialog_wireless_regdb
                 ;;
             8)
-                dialog_gamecompatibility
+                dialog_optimus_manager
                 ;;
             9)
-                dialog_network
+                dialog_gamecompatibility
                 ;;
             10)
-                dialog_libinput
+                dialog_network
                 ;;
             11)
-                dialog_bluetooth
+                dialog_libinput
                 ;;
             12)
-                dialog_podman
+                dialog_bluetooth
                 ;;
             13)
+                dialog_podman
+                ;;
+            14)
                 break
                 ;;
             *)
