@@ -90,7 +90,7 @@ function fallback {
 		--form "" 0 0 0 \
 		"Disk:" 1 1 "$full_root_device" 1 10 30 0 \
 		"Partition:" 2 1 "1" 2 10 30 0 \
-		"Label:" 3 1 "Arch EFI" 3 10 30 0 \
+		"Label:" 3 1 "Arch Linux Fallback" 3 10 30 0 \
 		"Root UUID:" 4 1 "$root_uuid" 4 10 30 0 \
 		2>&1 1>&3 | {
 		read -r disk
@@ -99,11 +99,11 @@ function fallback {
 		read -r uuid
 
 		efibootmgr --create \
-			--disk /dev/sda \
-			--part 1 \
-			--label "Arch Linux Fallback" \
+			--disk "${disk}" \
+			--part "${part}" \
+			--label "${label}" \
 			--loader /EFI/BOOT/BOOTX64.EFI \
-			--unicode 'root=UUID=0ef8b342-05cc-43c3-a2f4-fc3e30f8e537 rw initrd=\initramfs-linux.img'
+			--unicode "root=UUID=${root_uuid} rw initrd=\initramfs-linux.img"
 	}
 
 	alert_message "EFI fallback created"
