@@ -52,14 +52,14 @@ function dialog_easyeffect {
 }
 
 function dialog_basic_packages {
-    check_packages bash zsh python-virtualenv alacritty i3 rofi polybar rofi  \
+    check_packages bash zsh python-virtualenv alacritty i3 rofi polybar rofi \
         polybar fcitx5-im fcitx5-chinese-addons pavucontrol pipewire-pulse \
         adobe-source-han-serif-cn-fonts wqy-zenhei noto-fonts-cjk \
         noto-fonts-emoji noto-fonts-extra ttf-jetbrains-mono-nerd \
         polybar fcitx5-im fcitx5-chinese-addons nautilus python-pip rofi \
         xdotool wmctrl maim unclutter pkgfile xsel xclip touchegg bc easyeffects \
         lsp-plugins calf firefox-tridactyl otf-comicshanns-nerd xorg xorg-server \
-        rustup kwindowsystem picom
+        rustup kwindowsystem picom npm
 
     alert_message "Installed all packages"
 }
@@ -83,20 +83,20 @@ function dialog_neovim {
     dialog --title "Neovim" --menu "Choose an option:" 15 50 3 \
         1 "git@github.com:Ritzier/nvim" \
         2 "https://github.com/Ritzier/nvim" \
-        3 "Exit" 2> neovim_choice.txt
+        3 "Exit" 2>neovim_choice.txt
 
-    CHOICE=$(< neovim_choice.txt)
+    CHOICE=$(<neovim_choice.txt)
 
     case $CHOICE in
-        1)
-            clone_through_ssh
-            ;;
-        2)
-            clone_through_https
-            ;;
-        *)
-            return
-            ;;
+    1)
+        clone_through_ssh
+        ;;
+    2)
+        clone_through_https
+        ;;
+    *)
+        return
+        ;;
     esac
 
     alert_message "Neovim configuration done!"
@@ -112,40 +112,39 @@ function personal_menu {
             5 "Neovim" \
             6 "Fcitx5" \
             7 "EasyEffect" \
-            8 "Exit" 2> personal_choice.txt
+            8 "Exit" 2>personal_choice.txt
 
-        SYSTEM_CHOICE=$(< personal_choice.txt)
+        SYSTEM_CHOICE=$(<personal_choice.txt)
 
         case $SYSTEM_CHOICE in
-            1)
-                dialog_basic_packages
-                ;;
-            2)
-                dialog_i3
-                ;;
-            3)
-                dialog_alacritty
-                ;;
-            4)
-                dialog_zsh
-                ;;
-            5)
-                dialog_neovim
-                ;;
-            6)
-                dialog_fcitx7
-                ;;
-            7)
-                dialog_easyeffect
-                ;;
-            8)
-                break
-                ;;
-            *)
-                break
-                ;;
+        1)
+            dialog_basic_packages
+            ;;
+        2)
+            dialog_i3
+            ;;
+        3)
+            dialog_alacritty
+            ;;
+        4)
+            dialog_zsh
+            ;;
+        5)
+            dialog_neovim
+            ;;
+        6)
+            dialog_fcitx7
+            ;;
+        7)
+            dialog_easyeffect
+            ;;
+        8)
+            break
+            ;;
+        *)
+            break
+            ;;
         esac
     done
     rm -f personal_choice.txt
 }
-
