@@ -3,10 +3,6 @@
 main() {
     local dir="${1:-./}"
 
-    # Ignore specific file extensions and .git directory
-    local ignore_extensions=(-not \( -name "*.png" -o -name "*.mp4" -o \
-        -name "*.mp3" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.ttf" \))
-
     # Check if directory is a Git repository
     local git_ignore=false
     if git -C "$dir" rev-parse 2>/dev/null; then
@@ -14,28 +10,34 @@ main() {
     fi
 
     echo "File struct"
-    tree  "${dir}"
+    tree "${dir}"
     echo ""
 
-    # Find and process files with .git exclusion
-    find "$dir" \
-        -name ".git" -prune -o \
-        -type f "${ignore_extensions[@]}" -print0 | while IFS= read -r -d $'\0' file; do
+    # Use fd to find files, excluding specific extensions and .git directory
+    fd --type f \
+        --exclude "*.png" \
+        --exclude "*.mp4" \
+        --exclude "*.mp3" \
+        --exclude "*.jpg" \
+        --exclude "*.jpeg" \
+        --exclude "*.ttf" \
+        --exclude ".git" \
+        --print0 \
+        . "$dir" | while IFS= read -r -d $'\0' file; do
 
         # Skip Git-ignored files if in repository
-        if $git_ignore && git -C "$dir" check-ignore -q "$file"; then
+        if $git_ignore && git -C "$dir" check-ignore -q "$file" 2>/dev/null; then
             continue
         fi
 
         # Skip binary files based on MIME type
-        if file -i "$file" | grep -q 'charset=binary'; then
+        if file -i "$file" 2>/dev/null | grep -q 'charset=binary'; then
             continue
         fi
 
         # Print file header and contents
         echo ""
-        printf "=== %s ===" "$file"
-        echo ""
+        printf "=== %s ===\n" "$file"
         cat -- "$file"
     done
 }
