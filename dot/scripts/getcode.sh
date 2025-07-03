@@ -10,7 +10,7 @@ main() {
     fi
 
     echo "File struct"
-    tree "${dir}"
+    tree --gitignore
     echo ""
 
     # Use fd to find files, excluding specific extensions and .git directory
