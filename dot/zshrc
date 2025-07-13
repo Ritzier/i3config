@@ -7,6 +7,9 @@ export DOCKER_BUILDKIT=0
 export DISABLE_AUTO_UPDATE="true" # Disable OMZ update check
 export DISABLE_UPDATE_PROMPT="true" # Disable OMZ update prompt
 
+export EDITOR="nvim"
+export GIT_EDITOR="nvim"
+
 ZSH_THEME="ritz"
 
 plugins=(git copypath copyfile)
