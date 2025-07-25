@@ -3,21 +3,40 @@
 main() {
     local dir="./"
     local ignore_test=false # ./getcode.sh --ignore-test
+    local ignore_patterns=()
+    local dir_arg_set=
 
     # Argument Parsing
     # Loop through all arguments to find flags and the directory path.
-    for arg in "$@"; do
-        case "$arg" in
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
         --ignore-test)
             ignore_test=true
-            shift # remove --ignore-test from the argument list
+            shift
+            ;;
+        --ignore)
+            if [[ -n "$2" ]]; then
+                ignore_patterns+=("$2")
+                shift 2
+            else
+                echo "Error: --ignore flag requires a pattern argument."
+                exit 1
+            fi
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            echo "Unknown option: $1"
+            exit 1
             ;;
         *)
-            # Treat the first non-flag argument as the directory path
             if [[ -z "$dir_arg_set" ]]; then
-                dir="$arg"
+                dir="$1"
                 dir_arg_set=true
             fi
+            shift
             ;;
         esac
     done
@@ -38,17 +57,25 @@ main() {
     tree "$dir" --gitignore
     echo ""
 
+    # `fd` pattern args
+    fd_args=(
+        --type f
+        --exclude "*.png"
+        --exclude "*.mp4"
+        --exclude "*.mp3"
+        --exclude "*.jpg"
+        --exclude "*.jpeg"
+        --exclude "*.ttf"
+        --exclude ".git"
+    )
+
+    # Add additional --exclude from --ignore arugments
+    for pattern in "${ignore_patterns[@]}"; do
+        fd_args+=(--exclude "$pattern")
+    done
+
     # Use fd to find files, excluding specific extensions and .git directory
-    fd --type f \
-        --exclude "*.png" \
-        --exclude "*.mp4" \
-        --exclude "*.mp3" \
-        --exclude "*.jpg" \
-        --exclude "*.jpeg" \
-        --exclude "*.ttf" \
-        --exclude ".git" \
-        --print0 \
-        . "$dir" | while IFS= read -r -d $'\0' file; do
+    fd "${fd_args[@]}" --print0 . "$dir" | while IFS= read -r -d $'\0' file; do
 
         # Skip Git-ignored files if in repository
         if $git_ignore && git -C "$dir" check-ignore -q "$file" 2>/dev/null; then
