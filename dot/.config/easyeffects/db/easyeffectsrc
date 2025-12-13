@@ -1,0 +1,12 @@
+[StreamInputs]
+inputDevice=alsa_input.usb-SteelSeries_SteelSeries_Arctis_7-00.mono-chat
+
+[StreamOutputs]
+outputDevice=alsa_output.usb-SteelSeries_SteelSeries_Arctis_7-00.stereo-game
+plugins=bass_enhancer#0,equalizer#0
+visiblePage=pluginsPage
+visiblePlugin=equalizer#0
+
+[Window]
+height=1074
+width=1914

@@ -1,0 +1,11 @@
+[general]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+
+[font]
+
+normal.family = "CodeNewRoman Nerd Font Propo"
+bold.family = "CodeNewRoman Nerd Font Propo"
+italic.family = "CodeNewRoman Nerd Font Propo"
+bold_italic.family = "CodeNewRoman Nerd Font Propo"
+
+size = 9
