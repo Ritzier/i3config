@@ -1,17 +1,21 @@
 #!/bin/bash
 
-source ./components.sh
+HOME_PATH="$(git rev-parse --show-toplevel)/home"
+CONFIG_PATH="$(git rev-parse --show-toplevel)/home/.config"
+COMPONENT_PATH="$(git rev-parse --show-toplever)/scripts/components.sh"
+
+source $COMPONENT_PATH
 
 function dialog_i3 {
     check_packages i3 polybar rofi ttf-jetbrains-mono-nerd picom
-    cp -rf ./config/i3 ./config/rofi ./config/polybar ./config/picom.conf "$HOME"/.config/
+    cp -rf CONFIG_PATH/i3 CONFIG_PATH/rofi CONFIG_PATH/polybar CONFIG_PATH/picom.conf "$HOME/.config"
 
     alert_message "i3 configuration done!"
 }
 
 function dialog_alacritty {
     check_packages alacritty otf-comicshanns-nerd
-    cp -rf ./config/alacritty/ "$HOME"/.config/
+    cp -rf CONFIG_PATH/alacritty/ "$HOME"/.config/
     alert_message "Alacritty configuration done"
 }
 
@@ -22,15 +26,15 @@ function dialog_zsh {
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     fi
 
-    cp ./dot/zshrc "$HOME/.zshrc"
+    cp HOME_PATH/.zshrc "$HOME/.zshrc"
 
     if ! [[ -f "$HOME/.oh-my-zsh/themes/ritz.zsh-theme" ]]; then
-        git clone https://github.com/ritzier/ritz.zsh-theme theme
-        cp theme/ritz.zsh-theme "$HOME/.oh-my-zsh/themes"
+        git clone https://github.com/ritzier/ritz.zsh-theme /tmp/ritz.zsh-theme
+        cp /tmp/ritz.zsh-theme "$HOME/.oh-my-zsh/themes"
     fi
 
-    if [[ -d ./theme ]]; then
-        rm -rf ./theme
+    if [[ -d "/tmp/ritz.zsh-theme" && -n "/tmp/ritz.zsh-theme" ]]; then
+        rm -rf "/tmp/ritz.zsh-theme"
     fi
 
     alert_message "Zsh configuration done!"
@@ -47,7 +51,7 @@ function dialog_fcitx5 {
 
 function dialog_easyeffect {
     check_packages easyeffects
-    cp -rf ./config/easyeffects "$HOME/.config/"
+    cp -rf CONFIG_PATH/easyeffects "$HOME/.config/"
     alert_message "Easyeffect configuration done!"
 }
 
