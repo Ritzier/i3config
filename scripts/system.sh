@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source ./components.sh
+ETC_PATH="$(git rev-parse --show-toplevel)/etc"
+COMPONENT_PATH="$(git rev-parse --show-toplever)/scripts/components.sh"
+
+source $COMPONENT_PATH
 
 function dialog_efibootmgr {
     exec 3>&1
@@ -281,7 +284,7 @@ function dialog_network {
 function dialog_libinput {
     check_packages libinput
 
-    cp ./etc/X11/xorg.config.d/40-touchpad.conf /etc/X11/xorg.conf.d/40-touchpad.conf
+    cp $ETC_PATH/X11/xorg.config.d/40-touchpad.conf /etc/X11/xorg.conf.d/40-touchpad.conf
 
     alert_message "Libinput configuration done!"
 }
@@ -317,6 +320,41 @@ function dialog_podman {
     fi
 
     alert_message "Podman configuratoni done!"
+}
+
+function dialog_podman {
+    check_packages podman podman-compose fuse-overlayfs
+
+    systemctl enable podman
+
+    # Configuration
+    FILE_PATH="/etc/containers/registries.conf.d/10-unqualified-search-registries.conf"
+    REQUIRED_CONTENT='unqualified-search-registries = ["docker.io"]'
+
+    # Check does file exists
+    if [[ -f "$FILE_PATH" ]]; then
+        # if ! file doesn't have the content, write it
+        if ! grep -q "$REQUIRED_CONTENT" "$FILE_PATH"; then
+            echo "$REQUIRED_CONTENT" >"$FILE_PATH"
+        fi
+    else
+        # Create file parent dir
+        mkdir -p "$(dirname "$FILE_PATH")"
+        # Write content to file
+        echo "$REQUIRED_CONTENT" >"$FILE_PATH"
+    fi
+
+    alert_message "Podman configuratoni done!"
+}
+
+function diaglog_lemurs {
+    check_packages lemurs
+
+    systemctl enable lemurs
+
+    cp -r ETC_PATH/lemurs /etc/
+
+    alert_message "lemurs configuratoni done!"
 }
 
 function system_menu {
@@ -388,6 +426,9 @@ function system_menu {
             dialog_podman
             ;;
         15)
+            diaglog_lemurs
+            ;;
+        16)
             break
             ;;
         *)
